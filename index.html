@@ -252,8 +252,20 @@
 
         // Yes button handler
         yesBtn.addEventListener('click', () => {
+            // Hide initial content
             initialContent.style.display = 'none';
-            noBtn.style.display = 'none'; // Hide No button
+            
+            // Remove No button and its image
+            noBtn.style.display = 'none';
+            if (document.body.contains(noBtn)) {
+                document.body.removeChild(noBtn);
+            }
+            
+            // Hide the cat image
+            noButtonImage.style.display = 'none';
+            hideImage(); // Remove any active fade effects
+            
+            // Show success message
             successContent.style.display = 'block';
             document.querySelector('.invitation-card').style.padding = '60px 40px';
 
