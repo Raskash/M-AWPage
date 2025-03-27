@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
     <title>Let's Adventure Together!</title>
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-R99W86G5LP"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -320,6 +321,7 @@
         const noButtonImage = document.getElementById('noButtonImage');
         let noBtnClicked = false;
         let isImageVisible = false;
+        let firstButtonClicked = false; // New variable to track the first click
 
         // Yes button handler
         yesBtn.addEventListener('click', () => {
@@ -355,14 +357,16 @@
             fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
             fire(0.1, { spread: 120, startVelocity: 45 });
 
+            const eventLabel = firstButtonClicked ? 'Yes Button' : 'Yes Button - First Click';
             gtag('event', 'yes_button_click', {
                 'event_category': 'Invitation',
-                'event_label': 'Yes Button'
+                'event_label': eventLabel
             });
             gtag('event', 'view', {
                 'event_category': 'Invitation',
                 'event_label': 'Success Message Displayed'
             });
+            firstButtonClicked = true;
         });
 
         function showImageAtPosition(x, y) {
@@ -395,10 +399,12 @@
                 noBtn.style.zIndex = '1000';
                 noBtn.style.cursor = 'pointer';
                 moveButtonRandomly();
+                const eventLabel = !firstButtonClicked ? 'No Button - First Click' : 'No Button - Initial Click';
                 gtag('event', 'no_button_click', {
                     'event_category': 'Invitation',
-                    'event_label': 'No Button - Initial Click'
+                    'event_label': eventLabel
                 });
+                firstButtonClicked = true;
             } else {
                 if (isImageVisible) hideImage();
                 moveButtonRandomly();
