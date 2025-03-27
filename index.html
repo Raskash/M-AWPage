@@ -355,7 +355,7 @@
             fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
             fire(0.1, { spread: 120, startVelocity: 45 });
 
-            gtag('event', 'click', {
+            gtag('event', 'yes_button_click', {
                 'event_category': 'Invitation',
                 'event_label': 'Yes Button'
             });
@@ -395,14 +395,14 @@
                 noBtn.style.zIndex = '1000';
                 noBtn.style.cursor = 'pointer';
                 moveButtonRandomly();
-                gtag('event', 'click', {
+                gtag('event', 'no_button_click', {
                     'event_category': 'Invitation',
                     'event_label': 'No Button - Initial Click'
                 });
             } else {
                 if (isImageVisible) hideImage();
                 moveButtonRandomly();
-                gtag('event', 'click', {
+                gtag('event', 'no_button_click', {
                     'event_category': 'Invitation',
                     'event_label': 'No Button - Subsequent Click'
                 });
