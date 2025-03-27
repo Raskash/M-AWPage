@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
     <title>Let's Adventure Together!</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R99W86G5LP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-R99W86G5LP');
+    </script>
     <style>
         body {
             display: flex;
@@ -11,7 +18,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background: linear-gradient(rgba(255, 230, 230, 0.3), rgba(255, 230, 230, 0.3)), 
+            background: linear-gradient(rgba(255, 230, 230, 0.3), rgba(255, 230, 230, 0.3)),
                         url('Images/camille-minouflet-d7M5Xramf8g-unsplash.jpg');
             background-size: cover;
             background-position: center;
@@ -107,11 +114,23 @@
 
         .success-message {
             display: none;
+            flex-direction: column;
+            align-items: center;
             font-size: clamp(22px, 4vw, 28px);
             color: #ff85a2;
             margin: clamp(20px, 3vw, 30px) 0;
             animation: fadeIn 0.5s ease;
             padding: clamp(15px, 3vw, 20px);
+        }
+
+        .success-image {
+            width: clamp(150px, 30vw, 250px);
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 4px solid #ff85a2;
+            box-shadow: 0 6px 15px rgba(255, 133, 162, 0.2);
+            animation: fadeIn 0.8s ease;
         }
 
         .no-button-image {
@@ -131,20 +150,94 @@
             opacity: 1;
         }
 
-        .lily-container {
+        /* Weather Widget Styles */
+        .weather-widget {
             position: fixed;
-            top: -100px;
-            width: 100%;
-            pointer-events: none;
-            z-index: 2000;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ff85a2;
+            z-index: 1000;
+            width: 180px;
+            font-family: 'Arial', sans-serif;
+            animation: fadeIn 1s ease;
         }
 
-        .lily {
-            width: 40px;
-            height: 40px;
-            position: absolute;
-            animation: fall linear forwards, rotate linear infinite;
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #6d3b5a;
+        }
+
+        .weather-location {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .weather-date {
+            font-size: 14px;
             opacity: 0.8;
+        }
+
+        .weather-main {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .weather-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .weather-temp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff85a2;
+        }
+
+        .weather-details {
+            font-size: 13px;
+            color: #6d3b5a;
+        }
+
+        .weather-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .weather-widget {
+                top: 10px;
+                right: 10px;
+                width: 160px;
+                padding: 10px;
+            }
+
+            .weather-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .weather-temp {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .weather-widget {
+                position: static;
+                width: auto;
+                margin: 20px auto;
+                max-width: 300px;
+            }
         }
 
         @keyframes fadeIn {
@@ -156,56 +249,6 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .invitation-card {
-                width: 95%;
-                padding: 25px;
-            }
-
-            button {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                background-attachment: fixed;
-            }
-
-            .adventure-image, .adventure-gif {
-                width: 90%;
-                height: auto;
-                aspect-ratio: 1;
-            }
-
-            h1 {
-                font-size: 1.3rem;
-                line-height: 1.3;
-            }
-
-            .no-button-image {
-                width: 60px;
-                height: 60px;
-            }
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
@@ -213,33 +256,61 @@
     <div class="invitation-card">
         <div id="initialContent">
             <div class="media-container">
-                <img src="Images/cute-cat-cat.gif" 
-                     alt="Happy Cat" 
+                <img src="Images/cute-cat-cat.gif"
+                     alt="Happy Cat"
                      class="adventure-image">
-                <img src="Images/curious-cat.gif" 
-                     alt="Curious Cat" 
+                <img src="Images/curious-cat.gif"
+                     alt="Curious Cat"
                      class="adventure-gif">
             </div>
-            
+
             <h1>
                 You are officially invited to spend the best Sunday Ever! 🚗 <br>
                 Just one rule: no stress allowed - only good vibes ✨ <br>
                 Are you in? 🌸🍹
             </h1>
-            
+
             <div class="buttons">
                 <button id="yesBtn">Yes 😊</button>
                 <button id="noBtn">No 🚩🚩</button>
             </div>
         </div>
-        
+
         <div id="successContent" class="success-message">
-            You will not regret it 😉 <br>
-            Let's make some memories! 🌺
+            <img src="Images/Image_cat_pew_pew.jpg" alt="Celebration Cat" class="success-image">
+            <div class="success-text">
+                You will not regret it 😉 <br>
+                Let's make some memories! 🌺
+            </div>
         </div>
     </div>
 
     <div id="noButtonImage" class="no-button-image"></div>
+
+    <div class="weather-widget">
+        <div class="weather-header">
+            <div class="weather-location">San Felice Circeo</div>
+            <div class="weather-date">Sunday</div>
+        </div>
+        <div class="weather-main">
+            <img src="" alt="Weather Icon" class="weather-icon" id="weatherIcon">
+            <div class="weather-temp" id="weatherTemp">--°C</div>
+        </div>
+        <div class="weather-details">
+            <div class="weather-detail">
+                <span>Condition:</span>
+                <span id="weatherCondition">--</span>
+            </div>
+            <div class="weather-detail">
+                <span>Wind:</span>
+                <span id="weatherWind">--</span>
+            </div>
+            <div class="weather-detail">
+                <span>Rain:</span>
+                <span id="weatherRain">--</span>
+            </div>
+        </div>
+    </div>
 
     <script>
         const yesBtn = document.getElementById('yesBtn');
@@ -254,20 +325,18 @@
         yesBtn.addEventListener('click', () => {
             // Hide initial content
             initialContent.style.display = 'none';
-            
-            // Remove No button and its image
+
+            // Hide No button and its image
             noBtn.style.display = 'none';
-            if (document.body.contains(noBtn)) {
-                document.body.removeChild(noBtn);
-            }
-            
-            // Hide the cat image
             noButtonImage.style.display = 'none';
-            hideImage(); // Remove any active fade effects
-            
-            // Show success message
-            successContent.style.display = 'block';
+            hideImage();
+
+            // Show success content properly
+            successContent.style.display = 'flex'; // Changed from 'block'
             document.querySelector('.invitation-card').style.padding = '60px 40px';
+
+            // Force reflow to trigger animation
+            void successContent.offsetWidth;
 
             // Confetti explosion
             const count = 200;
@@ -286,34 +355,14 @@
             fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
             fire(0.1, { spread: 120, startVelocity: 45 });
 
-            // Falling lilies
-            const lilyImages = ['Images/lilies.png'];
-            const lilyContainer = document.createElement('div');
-            lilyContainer.className = 'lily-container';
-            document.body.appendChild(lilyContainer);
-
-            function createLily() {
-                const lily = document.createElement('img');
-                lily.className = 'lily';
-                lily.src = lilyImages[Math.floor(Math.random() * lilyImages.length)];
-                const startPosition = Math.random() * window.innerWidth;
-                const animationDuration = 4 + Math.random() * 2;
-                const rotationSpeed = Math.random() * 2 + 1;
-                
-                lily.style.left = startPosition + 'px';
-                lily.style.animation = 
-                    `fall ${animationDuration}s linear forwards, 
-                    rotate ${rotationSpeed}s linear infinite`;
-
-                lilyContainer.appendChild(lily);
-                setTimeout(() => lily.remove(), animationDuration * 1000);
-            }
-
-            const lilyInterval = setInterval(createLily, 150);
-            setTimeout(() => {
-                clearInterval(lilyInterval);
-                lilyContainer.remove();
-            }, 3000);
+            gtag('event', 'click', {
+                'event_category': 'Invitation',
+                'event_label': 'Yes Button'
+            });
+            gtag('event', 'view', {
+                'event_category': 'Invitation',
+                'event_label': 'Success Message Displayed'
+            });
         });
 
         function showImageAtPosition(x, y) {
@@ -346,9 +395,17 @@
                 noBtn.style.zIndex = '1000';
                 noBtn.style.cursor = 'pointer';
                 moveButtonRandomly();
+                gtag('event', 'click', {
+                    'event_category': 'Invitation',
+                    'event_label': 'No Button - Initial Click'
+                });
             } else {
                 if (isImageVisible) hideImage();
                 moveButtonRandomly();
+                gtag('event', 'click', {
+                    'event_category': 'Invitation',
+                    'event_label': 'No Button - Subsequent Click'
+                });
             }
         });
 
@@ -357,18 +414,89 @@
             const maxY = window.innerHeight - noBtn.offsetHeight;
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
-            
+
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
             noBtn.style.transition = 'left 0.4s, top 0.4s';
             noBtn.style.transform = `scale(1.1) rotate(${Math.random() * 20 - 10}deg)`;
-            
+
             setTimeout(() => {
                 noBtn.style.transform = 'scale(1) rotate(0)';
                 const rect = noBtn.getBoundingClientRect();
                 showImageAtPosition(rect.left + rect.width/2, rect.top + rect.height/2);
             }, 300);
         }
+
+        // Weather data fetch for Sunday
+        function fetchWeather() {
+            const apiKey = 'bd5e378503939ddaee76f12ad7a97608'; // Replace with your actual OpenWeatherMap API key
+            const city = 'San Felice Circeo';
+            const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const sunday = new Date();
+                    const today = new Date();
+                    const dayDifference = 7 - today.getDay(); // Calculate days until next Sunday
+                    sunday.setDate(today.getDate() + dayDifference);
+
+                    const sundayForecasts = data.list.filter(forecast => {
+                        const forecastDate = new Date(forecast.dt * 1000);
+                        return forecastDate.getDay() === sunday.getDay();
+                    });
+
+                    if (sundayForecasts.length > 0) {
+                        // Find a forecast around midday (12:00 PM) on Sunday
+                        let closestForecast = sundayForecasts[0];
+                        let minTimeDifference = Infinity;
+                        const targetHour = 12;
+
+                        sundayForecasts.forEach(forecast => {
+                            const forecastDate = new Date(forecast.dt * 1000);
+                            const hourDifference = Math.abs(forecastDate.getHours() - targetHour);
+                            if (hourDifference < minTimeDifference) {
+                                minTimeDifference = hourDifference;
+                                closestForecast = forecast;
+                            }
+                        });
+                        updateWeather(closestForecast);
+                    } else {
+                        // Optionally set default values in the widget if no data is found
+                        document.getElementById('weatherTemp').textContent = '--°C';
+                        document.getElementById('weatherCondition').textContent = '--';
+                        document.getElementById('weatherWind').textContent = '--';
+                        document.getElementById('weatherRain').textContent = '--';
+                        document.getElementById('weatherIcon').src = '';
+                        document.getElementById('weatherIcon').alt = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    // Optionally set error message in the widget
+                    document.getElementById('weatherTemp').textContent = 'Error';
+                    document.getElementById('weatherCondition').textContent = 'Error';
+                });
+        }
+
+        function updateWeather(data) {
+            const temperature = Math.round(data.main.temp);
+            const condition = data.weather[0].description;
+            const iconCode = data.weather[0].icon;
+            const windSpeed = data.wind.speed;
+            const rain = data.rain ? (data.rain['3h'] || 0) : 0; // Check for rain in the last 3 hours
+
+            document.getElementById('weatherTemp').textContent = `${temperature}°C`;
+            document.getElementById('weatherCondition').textContent = condition;
+            document.getElementById('weatherWind').textContent = `${windSpeed} m/s`;
+            document.getElementById('weatherRain').textContent = `${rain} mm`;
+            document.getElementById('weatherIcon').src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            document.getElementById('weatherIcon').alt = condition;
+        }
+
+        // Call weather function when page loads
+        window.addEventListener('DOMContentLoaded', fetchWeather);
+
     </script>
 </body>
 </html>
