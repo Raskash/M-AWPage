@@ -9,7 +9,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-R99W86G5LP', { 'send_page_view': false });
+        gtag('config', 'G-R99W86G5LP');
         //gtag('config', 'G-YZE2B1LT9P');
     </script>
     <style>
@@ -379,8 +379,8 @@
 
         function showImageAtPosition(buttonRect) {
             // Ensure the image is always within the viewport
-            const imageWidth = 75;
-            const imageHeight = 75;
+            const imageWidth = 150;
+            const imageHeight = 150;
             
             // Calculate screen dimensions
             const screenWidth = window.innerWidth;
@@ -450,33 +450,46 @@
         });
 
         function moveButtonRandomly() {
+            hideImage();
             const maxX = window.innerWidth - noBtn.offsetWidth;
             const maxY = window.innerHeight - noBtn.offsetHeight;
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
 
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-            noBtn.style.transition = 'left 0.4s, top 0.4s';
-            noBtn.style.transform = `scale(1.1) rotate(${Math.random() * 20 - 10}deg)`;
+            // Store the current scale and rotation for reference
+            noBtn.dataset.originalTransform = noBtn.style.transform;
 
-            // Randomly select an image from the array
+            // Randomly select an image
             const randomIndex = Math.floor(Math.random() * noButtonImages.length);
             const randomImage = noButtonImages[randomIndex];
-
-            // Set the background image of the noButtonImage element
             noButtonImage.style.backgroundImage = `url('${randomImage}')`;
-            noButtonImage.style.backgroundSize = 'contain';
-            noButtonImage.style.backgroundRepeat = 'no-repeat';
 
-            setTimeout(() => {
-                noBtn.style.transform = 'scale(1) rotate(0)';
-                // Wait for the transition to complete plus additional delay
-                setTimeout(() => {
+            // Clear existing timeouts
+            if (window.moveTimeout) clearTimeout(window.moveTimeout);
+            if (window.imageTimeout) clearTimeout(window.imageTimeout);
+
+            // Use a single event listener to handle both the movement and image display
+            const handleTransitionEnd = (event) => {
+                // Only proceed if it's the transform transition
+                if (event.propertyName === 'transform') {
+                    noBtn.removeEventListener('transitionend', handleTransitionEnd);
+                    
+                    // Reset transform to original state
+                    noBtn.style.transform = noBtn.dataset.originalTransform || 'scale(1) rotate(0)';
+
+                    // Immediately after transition, show the image
                     const rect = noBtn.getBoundingClientRect();
                     showImageAtPosition(rect);
-                }, 300); // 300ms delay after transition completes
-            }, 300); // 300ms for the initial transition
+                }
+            };
+
+            // Listen for when the transform transition completes
+            noBtn.addEventListener('transitionend', handleTransitionEnd);
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transition = 'left 0.4s, top 0.4s, transform 0.3s';
+            noBtn.style.transform = `scale(1.1) rotate(${Math.random() * 20 - 10}deg)`;
         }
 
         // Weather data fetch
